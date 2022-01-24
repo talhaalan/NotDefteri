@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Notebook</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search">search</string>
+    <string name="title_enter">Başlık girin</string>
+    <string name="body_enter">Açıklama girin</string>
+    <string name="save">Kaydet</string>
+    <string name="delete_note">Notu Sil</string>
+    <string name="delete_note_message">Notu silmek istediğinden emin misin?</string>
+    <string name="delete">Sil</string>
+    <string name="cancel">İptal</string>
+    <string name="exit">Çıkış yap</string>
+    <string name="exit_message">Çıkış yapmak istediğinden emin misin?</string>
+</resources>

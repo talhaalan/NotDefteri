@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/home_save"
+        app:showAsAction="never"
+        android:title="Yedekle"
+        android:icon="@drawable/ic_baseline_save"/>
+
+    <item android:id="@+id/home_read"
+        app:showAsAction="never"
+        android:title="Yedeği içe aktar"
+        android:icon="@drawable/ic_baseline_read_more_24"/>
+
+    <item android:id="@+id/home_exit"
+        app:showAsAction="never"
+        android:title="Çıkış Yap"/>
+
+</menu>

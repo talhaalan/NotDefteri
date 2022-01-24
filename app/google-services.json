@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "415221522910",
+    "firebase_url": "https://notes-f3388-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "notes-f3388",
+    "storage_bucket": "notes-f3388.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:415221522910:android:66cfc42af14e673c8f3d4f",
+        "android_client_info": {
+          "package_name": "com.example.notebook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "415221522910-e4c9500h8igilh3rs1tc2llbkf7h8mmv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3IbRDL_Lg2_wTUqIA66IpXQiAG3DDHEg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "415221522910-e4c9500h8igilh3rs1tc2llbkf7h8mmv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
