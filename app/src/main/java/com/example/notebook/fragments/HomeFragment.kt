@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.app.DownloadManager
 import android.content.*
+import android.content.Intent.getIntent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
@@ -11,18 +12,13 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.OpenableColumns
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.notebook.R
-import com.example.notebook.api.NetworkResponse
-import com.example.notebook.api.RetrofitInstance
 import com.example.notebook.databinding.FragmentHomeBinding
 import com.example.notebook.models.Note
 import com.example.notebook.viewmodel.NoteViewModel
-import com.firebase.ui.database.FirebaseRecyclerAdapter
-import kotlinx.coroutines.*
 
 import com.example.notebook.view.MainActivity
 import android.view.LayoutInflater
@@ -34,24 +30,23 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.DatabaseError
 
-import com.example.notebook.adapter.NoteViewHolder
 import com.firebase.ui.database.FirebaseRecyclerOptions
 
 import com.google.firebase.database.DataSnapshot
 
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.FirebaseDatabase
-import androidx.navigation.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 import java.io.*
 import java.util.*
 import com.google.gson.reflect.TypeToken
+import kotlin.collections.ArrayList
+import com.example.notebook.adapter.NoteAdapter
 
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -66,7 +61,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var startForResult: ActivityResultLauncher<Intent>
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor : SharedPreferences.Editor
-    private var imagePath = ""
+
+    private lateinit var noteList : ArrayList<Note>
+
     companion object {
         val TAG = "retrofit"
     }
@@ -132,8 +129,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     }
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -143,7 +138,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.fabAddNote.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_newNoteFragment)
         }
-
 
         startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -175,29 +169,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
         }
 
-
         auth = FirebaseAuth.getInstance()
-        binding.recyclerView.apply {
-            layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
-            setHasFixedSize(true)
-        }
-
         database = FirebaseDatabase.getInstance().reference
 
-        database.addValueEventListener(object : ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    binding.progressBar.visibility = View.GONE
-                }
-            }
+        getData()
 
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
 
-        })
 
-        val query = FirebaseDatabase.getInstance()
+        /*
+         val query = FirebaseDatabase.getInstance()
             .reference
             .child(auth.currentUser!!.uid)
             .child("Notes")
@@ -206,11 +186,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
 
         val options: FirebaseRecyclerOptions<Note?> = FirebaseRecyclerOptions.Builder<Note>()
-            .setQuery(query, Note::class.java)
+            .setQuery(query,Note::class.java)
             .setLifecycleOwner(this)
             .build()
 
-        var adapter =
+        val adapter =
             object : FirebaseRecyclerAdapter<Note?, NoteViewHolder?>(options) {
                 override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
 
@@ -222,6 +202,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
                 override fun onBindViewHolder(p0: NoteViewHolder, p1: Int, p2: Note) {
                     val noteId = getRef(p1).key.toString()
+
+                    val pos =  p0.adapterPosition
+
+                    println("noteId: " + noteId)
 
                     val service = RetrofitInstance.getInstance()
 
@@ -240,14 +224,20 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                                     override fun onDataChange(snapshot: DataSnapshot) {
 
                                         binding.recyclerView.visibility = View.VISIBLE
-                                        binding.progressBar.visibility = View.GONE
+
                                         val title = response.body.noteTitle
                                         val body = response.body.noteBody
 
+                                        println("resbody: " + response.body)
+
+                                        val note = Note(noteId,title,body)
+                                        val arrayListNote = arrayListOf(note)
+
+                                        val adapter = NoteAdapter(requireContext(),arrayListNote)
 
                                         //p0.disableProgress(true)
-                                        p0.setNoteTitle(title)
-                                        p0.setNoteBody(body)
+                                        p0.setNoteTitle(note.noteTitle)
+                                        p0.setNoteBody(note.noteBody)
 
                                         p0.itemView.setOnClickListener {
                                             val direction = HomeFragmentDirections.actionHomeFragmentToUpdateNoteFragment(p2)
@@ -268,13 +258,48 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     }
 
 
+
                 }
             }
-
-        binding.recyclerView.adapter = adapter
+         */
+        //binding.recyclerView.adapter = adapter
 
 
         return binding.root
+    }
+
+    private fun getData() {
+        val noteViewModel = (activity as MainActivity).noteViewModel
+
+        database.child(auth.currentUser!!.uid).child("Notes")
+            .addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (i in snapshot.children) {
+                        val key = i.key.toString()
+                        noteViewModel.noteArrayList.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+
+                            binding.recyclerView.apply {
+                                layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
+                                setHasFixedSize(true)
+                            }
+                            it.let { note ->
+                                val noteAdapter = NoteAdapter(requireContext(),note)
+                                //Log.d(TAG,"noteTitle ${response.body.noteTitle}")
+                                binding.recyclerView.adapter = noteAdapter
+                                noteAdapter.notifyDataSetChanged()
+                            }
+
+
+                        })
+
+                        noteViewModel.getData(auth.currentUser!!.uid,key)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })
     }
 
     private fun getPath(backupName: String) {
@@ -293,6 +318,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
                 val rootRef = FirebaseDatabase.getInstance().reference.child(auth.currentUser!!.uid)
                 rootRef.setValue(jsonMap)
+                requireActivity().recreate()
             } else {
                 val folder : File =  Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
                 println("folder1: " + folder)
@@ -311,6 +337,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
                     val rootRef = FirebaseDatabase.getInstance().reference
                     rootRef.setValue(jsonMap)
+                    requireActivity().recreate()
 
                 } catch (e: IOException) {
                     e.printStackTrace()
@@ -318,7 +345,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
         }
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
@@ -379,4 +405,5 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
         return super.onOptionsItemSelected(item)
     }
+
 }
