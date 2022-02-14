@@ -12,4 +12,7 @@
     <string name="cancel">İptal</string>
     <string name="exit">Çıkış yap</string>
     <string name="exit_message">Çıkış yapmak istediğinden emin misin?</string>
+    <string name="add_note">Not ekle</string>
+    <string name="update_note">Not güncelle</string>
+    <string name="add_todo">Görev ekle</string>
 </resources>

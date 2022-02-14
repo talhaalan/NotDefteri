@@ -6,10 +6,8 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @IgnoreExtraProperties
-data class Note(
-    val noteId : String = "",
-    val noteTitle : String = "",
-    val noteBody : String = "",
-    val noteImage : String = "",
-    val time : String = ""
-    ) : Parcelable
+data class Todo (
+    val id : String = "",
+    val title : String = "",
+    val check : Boolean = false
+        ) : Parcelable

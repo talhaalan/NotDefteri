@@ -5,12 +5,15 @@
       <map>
         <entry key="..\:/Users/talha/AndroidStudioProjects/Notebook/app/src/main/res/drawable/custom_button.xml" value="0.26614583333333336" />
         <entry key="..\:/Users/talha/AndroidStudioProjects/Notebook/app/src/main/res/layout/activity_main.xml" value="0.2128623188405797" />
-        <entry key="..\:/Users/talha/AndroidStudioProjects/Notebook/app/src/main/res/layout/fragment_home.xml" value="0.2128623188405797" />
+        <entry key="..\:/Users/talha/AndroidStudioProjects/Notebook/app/src/main/res/layout/fragment_home.xml" value="0.2" />
         <entry key="..\:/Users/talha/AndroidStudioProjects/Notebook/app/src/main/res/layout/fragment_login.xml" value="0.25" />
-        <entry key="..\:/Users/talha/AndroidStudioProjects/Notebook/app/src/main/res/layout/fragment_new_note.xml" value="0.2128623188405797" />
+        <entry key="..\:/Users/talha/AndroidStudioProjects/Notebook/app/src/main/res/layout/fragment_new_note.xml" value="0.264" />
+        <entry key="..\:/Users/talha/AndroidStudioProjects/Notebook/app/src/main/res/layout/fragment_new_todo.xml" value="0.264" />
         <entry key="..\:/Users/talha/AndroidStudioProjects/Notebook/app/src/main/res/layout/fragment_register.xml" value="0.264" />
-        <entry key="..\:/Users/talha/AndroidStudioProjects/Notebook/app/src/main/res/layout/fragment_update_note.xml" value="0.4" />
+        <entry key="..\:/Users/talha/AndroidStudioProjects/Notebook/app/src/main/res/layout/fragment_update_note.xml" value="0.264" />
         <entry key="..\:/Users/talha/AndroidStudioProjects/Notebook/app/src/main/res/layout/note_layout_viewholder.xml" value="0.264" />
+        <entry key="..\:/Users/talha/AndroidStudioProjects/Notebook/app/src/main/res/layout/todo_alert_view.xml" value="0.264" />
+        <entry key="..\:/Users/talha/AndroidStudioProjects/Notebook/app/src/main/res/layout/todo_view_holder.xml" value="0.4" />
         <entry key="..\:/Users/talha/AndroidStudioProjects/Notebook/app/src/main/res/menu/home_menu.xml" value="0.25" />
         <entry key="..\:/Users/talha/AndroidStudioProjects/Notebook/app/src/main/res/menu/new_note_menu.xml" value="0.25" />
       </map>

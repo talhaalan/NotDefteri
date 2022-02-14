@@ -12,4 +12,6 @@ class NoteRepository constructor(private val apiInterface: ApiInterface) {
 
     suspend fun getAllNotes(uid:String,noteId: String) = apiInterface.getNotes(uid,noteId)
 
+    suspend fun getAllTodo(uid:String,id: String) = apiInterface.getTodo(uid,id)
+
 }

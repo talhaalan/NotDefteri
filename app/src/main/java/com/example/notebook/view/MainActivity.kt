@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        setSupportActionBar(binding.toolbar)
+        //setSupportActionBar(binding.toolbar)
 
         val noteRepository = NoteRepository(RetrofitInstance.getInstance())
         val viewModelProviderFactory = ViewModelProviderFactory(noteRepository)

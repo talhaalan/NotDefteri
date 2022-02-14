@@ -8,10 +8,36 @@
     android:background="@color/background_white"
     android:orientation="vertical">
 
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/CustomToolbar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/noteImage"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_baseline_add_a_photo_24"/>
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -25,7 +51,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="10dp">
+
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="30dp"
+                    android:layout_marginTop="8dp"
+                    android:indeterminateTint="@color/colorPrimary"
+                    android:indeterminate="true"
+                    android:layout_height="30dp"
+                    android:visibility="gone"
+                    android:layout_gravity="center"/>
+
 
                 <EditText
                     android:id="@+id/etNoteTitleUpdate"
@@ -37,8 +75,7 @@
                     android:inputType="text"
                     android:textColor="@color/black"
                     android:textColorHint="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textSize="18sp" />
 
                 <EditText
                     android:id="@+id/etNoteBodyUpdate"
@@ -52,7 +89,7 @@
                     android:inputType="textMultiLine"
                     android:textColor="@color/black"
                     android:textColorHint="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -63,8 +100,8 @@
         android:id="@+id/fab_update"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:clickable="true"
         app:borderWidth="0dp"
         android:backgroundTint="@color/colorPrimary"
@@ -75,18 +112,33 @@
         />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        app:borderWidth="0dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:tintMode="@color/white"
+        android:src="@drawable/ic_baseline_add_a_photo_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/fab_update"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="16dp"
         android:clickable="true"
         app:borderWidth="0dp"
         android:backgroundTint="@color/colorPrimary"
         android:tintMode="@color/white"
         android:src="@drawable/ic_baseline_delete"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/fab_update"
+        app:layout_constraintEnd_toStartOf="@id/fab_add_image"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

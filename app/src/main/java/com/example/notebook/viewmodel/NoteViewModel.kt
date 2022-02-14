@@ -8,6 +8,7 @@ import com.example.notebook.adapter.NoteAdapter
 import com.example.notebook.api.NetworkResponse
 import com.example.notebook.fragments.HomeFragment.Companion.TAG
 import com.example.notebook.models.Note
+import com.example.notebook.models.Todo
 import com.example.notebook.repository.NoteRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -22,6 +23,40 @@ class NoteViewModel constructor(private val noteRepository: NoteRepository) : Vi
     lateinit var database : DatabaseReference
     var noteArrayList = MutableLiveData<ArrayList<Note>>()
     lateinit var noteList : ArrayList<Note>
+
+    var todoArrayList = MutableLiveData<ArrayList<Todo>>()
+    lateinit var todoList : ArrayList<Todo>
+
+    fun getTodoData(uid: String,id: String) {
+        database = FirebaseDatabase.getInstance().getReference("Todo")
+        auth = FirebaseAuth.getInstance()
+
+        todoList = ArrayList()
+
+        job = CoroutineScope(Dispatchers.IO).launch {
+            val response = noteRepository.getAllTodo(uid,id)
+            withContext(Dispatchers.Main) {
+                when (response) {
+                    is NetworkResponse.Success -> {
+                        val todo : Todo = response.body
+                        todoList.add(0,todo)
+                        todoArrayList.postValue(todoList)
+                    }
+                    is NetworkResponse.ApiError -> {
+                        Log.d(TAG,"ApiError ${response.body.message}")
+                    }
+                    is NetworkResponse.NetworkError -> {
+                        Log.d(TAG,"NetworkError")
+                    }
+                    is NetworkResponse.UnknownError -> {
+                        Log.d(TAG,"UnknownError")
+                    }
+                }
+            }
+        }
+
+
+    }
 
     fun getData(uid: String,noteId : String) {
         database = FirebaseDatabase.getInstance().getReference("Notes")
